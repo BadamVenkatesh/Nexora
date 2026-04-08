@@ -61,31 +61,31 @@ export default function Navbar({ user, onLoginClick, onLogout, onNavigate }) {
                 </div>
 
                 {/* Mobile hamburger */}
-                <button onClick={() => setMobileOpen(!mobileOpen)} className="xl:hidden flex flex-col gap-1 p-2">
-                    <span className={`block w-5 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5.5px]' : ''}`}></span>
-                    <span className={`block w-5 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`}></span>
-                    <span className={`block w-5 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5.5px]' : ''}`}></span>
+                <button onClick={() => setMobileOpen(!mobileOpen)} className="xl:hidden flex flex-col gap-[3px] p-2">
+                    <span className={`block w-4 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[4.5px]' : ''}`}></span>
+                    <span className={`block w-4 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`}></span>
+                    <span className={`block w-4 h-[1.5px] bg-cream transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[4.5px]' : ''}`}></span>
                 </button>
             </div>
 
             {/* Mobile menu */}
-            <div className={`xl:hidden glass overflow-hidden transition-all duration-500 ${mobileOpen ? 'max-h-[480px] py-4' : 'max-h-0'}`}>
-                <div className="flex flex-col items-center gap-3 px-4">
+            <div className={`xl:hidden glass overflow-hidden transition-all duration-500 ${mobileOpen ? 'max-h-[400px] py-3' : 'max-h-0'}`}>
+                <div className="flex flex-col items-center gap-1.5 px-4">
                     {links.map((link) => (
                         <button key={link.id} onClick={() => handleNav(link.id)}
-                            className="text-sm text-cream/60 hover:text-amber transition-colors tracking-wide uppercase w-full text-center py-1.5">
+                            className="text-xs text-cream/60 hover:text-amber transition-colors tracking-wide uppercase w-full text-center py-1.5">
                             {link.label}
                         </button>
                     ))}
-                    <div className="w-12 h-px bg-cream/10 my-1" />
+                    <div className="w-10 h-px bg-cream/10 my-0.5" />
                     {user ? (
                         <>
                             <button onClick={() => { onNavigate?.('admin'); setMobileOpen(false); }}
-                                className="text-sm text-amber font-medium tracking-wide uppercase py-1.5">Dashboard</button>
-                            <button onClick={() => { onLogout(); setMobileOpen(false); }} className="btn-secondary text-xs py-2 px-5">Logout</button>
+                                className="text-xs text-amber font-medium tracking-wide uppercase py-1.5">Dashboard</button>
+                            <button onClick={() => { onLogout(); setMobileOpen(false); }} className="btn-secondary text-[10px] py-1.5 px-4">Logout</button>
                         </>
                     ) : (
-                        <button onClick={() => { onLoginClick(); setMobileOpen(false); }} className="btn-primary text-xs py-2 px-6">Login</button>
+                        <button onClick={() => { onLoginClick(); setMobileOpen(false); }} className="btn-primary text-[10px] py-1.5 px-5">Login</button>
                     )}
                 </div>
             </div>
