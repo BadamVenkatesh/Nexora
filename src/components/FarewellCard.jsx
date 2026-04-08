@@ -76,7 +76,6 @@ export default function FarewellCard({ onBack }) {
                 if (navigator.share && navigator.canShare?.({ files: [file] })) {
                     await navigator.share({ files: [file], title: 'Nexora Farewell Card' });
                 } else {
-                    // Fallback: trigger download
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.download = 'nexora-farewell-card.png';
@@ -94,12 +93,10 @@ export default function FarewellCard({ onBack }) {
 
     return (
         <div ref={pageRef} className="fixed inset-0 z-[500] bg-charcoal overflow-y-auto" style={{ opacity: 0 }}>
-            {/* Ambient */}
             <div className="fixed inset-0 pointer-events-none">
                 <div className="absolute top-1/3 left-1/3 w-[250px] h-[250px] rounded-full bg-lavender/[0.03] blur-[80px]" />
             </div>
 
-            {/* Back */}
             <div className="fixed top-4 left-4 z-50">
                 <button onClick={handleBack} className="flex items-center gap-1.5 text-cream/40 hover:text-amber transition-colors group p-1">
                     <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +107,6 @@ export default function FarewellCard({ onBack }) {
             </div>
 
             <div className="min-h-screen flex flex-col items-center px-4 py-14 md:py-20">
-                {/* Title */}
                 <div ref={titleRef} className="text-center mb-5" style={{ opacity: 0 }}>
                     <div className="ornament mb-3"><div className="ornament-icon"></div></div>
                     <h1 className="font-serif text-2xl md:text-4xl text-cream font-light italic">Farewell Card</h1>
@@ -118,7 +114,7 @@ export default function FarewellCard({ onBack }) {
                 </div>
 
                 {/* Upload */}
-                <div ref={uploadRef} className="w-full max-w-[320px] md:max-w-sm mb-5" style={{ opacity: 0 }}>
+                <div ref={uploadRef} className="w-full max-w-[340px] mb-5" style={{ opacity: 0 }}>
                     <input type="file" ref={fileRef} accept="image/*" onChange={handleImageUpload} className="hidden" />
                     <button onClick={() => fileRef.current?.click()}
                         className="w-full glass-card p-4 flex items-center gap-3 group hover:border-amber/20 transition-all active:scale-[0.98]">
@@ -137,68 +133,84 @@ export default function FarewellCard({ onBack }) {
                 {/* Card Preview */}
                 {image && (
                     <>
-                        <div className="w-full max-w-[320px] md:max-w-sm">
+                        <div className="w-full max-w-[340px]">
                             <div
                                 ref={cardRef}
                                 style={{
-                                    background: 'linear-gradient(145deg, #1e1e1e 0%, #151515 50%, #1a1612 100%)',
-                                    borderRadius: '16px',
+                                    background: 'linear-gradient(160deg, #1f1b18 0%, #141210 40%, #0f0d0b 100%)',
+                                    borderRadius: '20px',
                                     overflow: 'hidden',
-                                    boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(245,240,232,0.06)',
+                                    boxShadow: '0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(245,240,232,0.05)',
                                 }}
                             >
-                                {/* Top accent line */}
+                                {/* Top gold accent line */}
                                 <div style={{ width: '100%', height: '3px', background: 'linear-gradient(90deg, #a88a4e, #c9a96e, #d4ba85, #c9a96e, #a88a4e)' }} />
 
-                                {/* Image */}
-                                <div style={{ margin: '16px 16px 0 16px', borderRadius: '12px', overflow: 'hidden', aspectRatio: '4/3' }}>
+                                {/* Photo with elegant frame */}
+                                <div style={{ margin: '20px 20px 0', borderRadius: '14px', overflow: 'hidden', aspectRatio: '3/4', position: 'relative' }}>
                                     <img src={image} alt="Your photo" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                    {/* Inner shadow overlay */}
+                                    <div style={{ position: 'absolute', inset: 0, borderRadius: '14px', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.4)' }} />
                                 </div>
 
-                                {/* Content */}
-                                <div style={{ padding: '16px 20px 14px' }}>
-                                    {/* Brand */}
-                                    <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-                                        <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '24px', color: '#c9a96e', fontWeight: 500, letterSpacing: '0.05em', margin: 0 }}>
-                                            Nexora
-                                        </p>
+                                {/* Content area */}
+                                <div style={{ padding: '20px 24px 18px', textAlign: 'center' }}>
+                                    {/* Nexora brand */}
+                                    <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '26px', color: '#c9a96e', fontWeight: 600, letterSpacing: '0.06em', marginBottom: '6px' }}>
+                                        Nexora
+                                    </p>
+
+                                    {/* Subtitle */}
+                                    <p style={{ fontFamily: '"Inter", sans-serif', fontSize: '8px', color: 'rgba(245,240,232,0.2)', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                                        Farewell 2026
+                                    </p>
+
+                                    {/* Ornamental divider */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
+                                        <div style={{ width: '28px', height: '1px', background: 'rgba(201,169,110,0.3)' }} />
+                                        <div style={{ width: '4px', height: '4px', background: 'rgba(201,169,110,0.4)', transform: 'rotate(45deg)' }} />
+                                        <div style={{ width: '28px', height: '1px', background: 'rgba(201,169,110,0.3)' }} />
                                     </div>
 
-                                    {/* Divider */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
-                                        <div style={{ width: '30px', height: '1px', background: 'rgba(201,169,110,0.3)' }} />
-                                        <div style={{ width: '5px', height: '5px', background: 'rgba(201,169,110,0.4)', transform: 'rotate(45deg)' }} />
-                                        <div style={{ width: '30px', height: '1px', background: 'rgba(201,169,110,0.3)' }} />
-                                    </div>
-
-                                    {/* Quote */}
-                                    <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '11px', color: 'rgba(245,240,232,0.5)', fontStyle: 'italic', textAlign: 'center', lineHeight: '1.6', margin: 0 }}>
+                                    {/* Main quote */}
+                                    <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '12px', color: 'rgba(245,240,232,0.5)', fontStyle: 'italic', lineHeight: '1.7', marginBottom: '16px', maxWidth: '260px', marginLeft: 'auto', marginRight: 'auto' }}>
                                         &ldquo;You may leave, but you&rsquo;ll always stay in our hearts&rdquo;
                                     </p>
 
-                                    {/* Signature */}
-                                    <div style={{ marginTop: '12px', textAlign: 'right' }}>
-                                        <p style={{ fontFamily: '"Inter", sans-serif', fontSize: '8px', color: 'rgba(245,240,232,0.2)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 2px 0' }}>
-                                            With love,
-                                        </p>
-                                        <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '14px', color: 'rgba(201,169,110,0.6)', fontWeight: 500, margin: 0 }}>
-                                            B21
-                                        </p>
+                                    {/* Bottom section with signature */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                        {/* Small heart */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <span style={{ fontSize: '10px', opacity: 0.3 }}>♡</span>
+                                            <p style={{ fontFamily: '"Inter", sans-serif', fontSize: '7px', color: 'rgba(245,240,232,0.15)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                                                Made with love
+                                            </p>
+                                        </div>
+
+                                        {/* B21 signature */}
+                                        <div style={{ textAlign: 'right' }}>
+                                            <p style={{ fontFamily: '"Inter", sans-serif', fontSize: '7px', color: 'rgba(245,240,232,0.2)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '2px' }}>
+                                                With love,
+                                            </p>
+                                            <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '18px', color: '#c9a96e', fontWeight: 600, letterSpacing: '0.05em' }}>
+                                                B21
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Bottom accent */}
-                                <div style={{ width: '100%', height: '2px', background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.12), transparent)' }} />
+                                <div style={{ width: '100%', height: '2px', background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.1), transparent)' }} />
                             </div>
                         </div>
 
                         {/* Action Buttons */}
-                        <div ref={actionsRef} className="flex gap-3 mt-5 w-full max-w-[320px] md:max-w-sm" style={{ opacity: 0 }}>
+                        <div ref={actionsRef} className="flex gap-3 mt-5 w-full max-w-[340px]" style={{ opacity: 0 }}>
                             <button onClick={handleDownload} disabled={downloading}
-                                className="flex-1 btn-primary flex items-center justify-center gap-2 py-3 text-sm disabled:opacity-50">
+                                className="flex-1 btn-primary flex items-center justify-center gap-2 py-3 text-xs disabled:opacity-50">
                                 {downloading ? (
                                     <>
-                                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                                         </svg>
@@ -206,7 +218,7 @@ export default function FarewellCard({ onBack }) {
                                     </>
                                 ) : (
                                     <>
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
                                         </svg>
                                         Download
@@ -214,8 +226,8 @@ export default function FarewellCard({ onBack }) {
                                 )}
                             </button>
                             <button onClick={handleShare}
-                                className="flex-1 btn-secondary flex items-center justify-center gap-2 py-3 text-sm">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                className="flex-1 btn-secondary flex items-center justify-center gap-2 py-3 text-xs">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                                 </svg>
                                 Share
@@ -224,10 +236,12 @@ export default function FarewellCard({ onBack }) {
                     </>
                 )}
 
-                {/* Hint text */}
+                {/* Empty state hint */}
                 {!image && (
-                    <div className="mt-6 text-center">
-                        <p className="text-cream/15 text-[10px] font-sans italic">Upload a photo and create a farewell card to remember.</p>
+                    <div className="mt-4 text-center max-w-[280px]">
+                        <p className="text-cream/10 text-[10px] font-sans italic leading-relaxed">
+                            Upload a photo and create a farewell card that captures the beauty of goodbye.
+                        </p>
                     </div>
                 )}
             </div>

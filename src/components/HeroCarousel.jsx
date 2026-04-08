@@ -33,9 +33,9 @@ export default function HeroCarousel() {
           .filter(h => h.createdAt?.seconds && (now - h.createdAt.seconds * 1000) < 24 * 60 * 60 * 1000)
           .map(h => ({ image: h.imageUrl || '', quote: h.quote || h.title || '', author: h.author || '', isHighlight: true, badge: h.badge || '✦ Today\'s Highlight' }));
         setSlides([...adminSlides, ...defaultSlides]);
-      }, () => {});
+      }, (err) => { console.error('[HeroCarousel] Firestore error:', err.message); });
       return () => unsub();
-    } catch {}
+    } catch (e) { console.error('[HeroCarousel] Init error:', e.message); }
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -100,9 +100,8 @@ export default function HeroCarousel() {
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2.5">
         {slides.map((slide, i) => (
-          <button key={i} onClick={() => goToSlide(i)} className={`transition-all duration-500 rounded-full ${
-            current === i ? `w-7 h-1.5 ${slide.isHighlight ? 'bg-rose' : 'bg-amber'}` : 'w-1.5 h-1.5 bg-cream/25'
-          }`} />
+          <button key={i} onClick={() => goToSlide(i)} className={`transition-all duration-500 rounded-full ${current === i ? `w-7 h-1.5 ${slide.isHighlight ? 'bg-rose' : 'bg-amber'}` : 'w-1.5 h-1.5 bg-cream/25'
+            }`} />
         ))}
       </div>
 
