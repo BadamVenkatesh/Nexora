@@ -108,11 +108,11 @@ export default function FindSenior({ onBack }) {
 
             {/* Back */}
             <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50" ref={backRef} style={{ opacity: 0 }}>
-                <button onClick={handleBack} className="flex items-center gap-1.5 text-cream/40 hover:text-amber transition-colors group p-2">
-                    <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                <button onClick={handleBack} className="flex items-center gap-2 text-cream/50 hover:text-amber transition-colors group p-3 rounded-xl active:scale-95">
+                    <svg className="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-[10px] tracking-wider uppercase font-sans hidden sm:inline">Back to Nexora</span>
+                    <span className="text-xs tracking-wider uppercase font-sans">Back</span>
                 </button>
             </div>
 

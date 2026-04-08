@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 const SONG_URL = '/song.mpeg';
@@ -9,7 +9,9 @@ const lines = [
 ];
 
 export default function SplashScreen({ onComplete }) {
+    const [started, setStarted] = useState(false);
     const containerRef = useRef(null);
+    const tapRef = useRef(null);
     const lineRefs = useRef([]);
     const logoRef = useRef(null);
     const dotRef = useRef(null);
@@ -17,15 +19,32 @@ export default function SplashScreen({ onComplete }) {
     const btnRef = useRef(null);
     const audioRef = useRef(null);
 
+    // Fade-in the initial "tap to begin" prompt
     useEffect(() => {
-        // Try to play audio on load
+        gsap.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+        if (tapRef.current) {
+            gsap.fromTo(tapRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+        }
+    }, []);
+
+    // When user taps, start audio + animation
+    const handleStart = () => {
+        if (started) return;
+        setStarted(true);
+
+        // Start audio (user gesture so it will play)
         if (audioRef.current) {
             audioRef.current.volume = 0.3;
             audioRef.current.play().catch(() => { });
         }
 
+        // Run the cinematic animation
         const tl = gsap.timeline();
-        tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+
+        // Fade out tap prompt
+        if (tapRef.current) {
+            tl.to(tapRef.current, { opacity: 0, y: -10, duration: 0.3 });
+        }
 
         lineRefs.current.forEach((line) => {
             if (!line) return;
@@ -42,28 +61,33 @@ export default function SplashScreen({ onComplete }) {
             { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
         tl.fromTo(btnRef.current, { opacity: 0, y: 15 },
             { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
-
-        return () => tl.kill();
-    }, []);
+    };
 
     const handleEnter = () => {
-        // Fade out audio
+        // Stop audio
         if (audioRef.current) {
             const audio = audioRef.current;
-            const fadeOut = setInterval(() => {
-                if (audio.volume > 0.05) {
-                    audio.volume = Math.max(0, audio.volume - 0.05);
-                } else {
+            const startVol = audio.volume;
+            const steps = 6;
+            let step = 0;
+            const fade = setInterval(() => {
+                step++;
+                audio.volume = Math.max(0, startVol * (1 - step / steps));
+                if (step >= steps) {
                     audio.pause();
-                    clearInterval(fadeOut);
+                    audio.currentTime = 0;
+                    clearInterval(fade);
                 }
-            }, 80);
+            }, 50);
         }
         gsap.to(containerRef.current, { opacity: 0, scale: 1.03, duration: 0.5, ease: 'power2.in', onComplete });
     };
 
     return (
-        <div ref={containerRef} className="fixed inset-0 z-[10000] bg-charcoal flex flex-col items-center justify-center px-6 overflow-hidden" style={{ opacity: 0 }}>
+        <div ref={containerRef} onClick={!started ? handleStart : undefined}
+            className={`fixed inset-0 z-[10000] bg-charcoal flex flex-col items-center justify-center px-6 overflow-hidden ${!started ? 'cursor-pointer' : ''}`}
+            style={{ opacity: 0 }}>
+
             {/* Background audio */}
             <audio ref={audioRef} src={SONG_URL} loop preload="auto" />
 
@@ -79,8 +103,20 @@ export default function SplashScreen({ onComplete }) {
                 <div className="w-[280px] h-[280px] md:w-[400px] md:h-[400px] rounded-full bg-amber/[0.03] blur-[80px]" />
             </div>
 
-            {/* Poem */}
-            <div className="text-center max-w-[280px] md:max-w-sm mb-8 md:mb-10 relative z-10">
+            {/* Tap to begin prompt (shown before start) */}
+            {!started && (
+                <div ref={tapRef} className="text-center relative z-10" style={{ opacity: 0 }}>
+                    <div className="w-14 h-14 rounded-full border border-amber/30 flex items-center justify-center mx-auto mb-4 animate-pulse-soft">
+                        <svg className="w-5 h-5 text-amber/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        </svg>
+                    </div>
+                    <p className="text-cream/40 text-xs tracking-[0.2em] uppercase font-sans">Tap to begin</p>
+                </div>
+            )}
+
+            {/* Poem (hidden initially, shown after start) */}
+            <div className={`text-center max-w-[280px] md:max-w-sm mb-8 md:mb-10 relative z-10 ${!started ? 'hidden' : ''}`}>
                 {lines.map((line, i) => (
                     <p key={i} ref={(el) => (lineRefs.current[i] = el)}
                         className="font-serif italic text-sm md:text-lg leading-relaxed text-cream/80 mb-1" style={{ opacity: 0 }}>
@@ -89,17 +125,17 @@ export default function SplashScreen({ onComplete }) {
                 ))}
             </div>
 
-            {/* Logo */}
-            <div ref={logoRef} className="text-center relative z-10 flex items-center justify-center gap-2" style={{ opacity: 0 }}>
+            {/* Logo (hidden initially) */}
+            <div ref={logoRef} className={`text-center relative z-10 flex items-center justify-center gap-2 ${!started ? 'hidden' : ''}`} style={{ opacity: 0 }}>
                 <h1 className="font-serif text-4xl md:text-7xl font-bold tracking-wider text-cream">Nexora</h1>
                 <span ref={dotRef} className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-amber mt-1" style={{ opacity: 0 }}></span>
             </div>
 
-            <p ref={subtitleRef} className="text-cream/25 text-[9px] md:text-xs tracking-[0.3em] uppercase font-sans mt-2 md:mt-3 relative z-10" style={{ opacity: 0 }}>
+            <p ref={subtitleRef} className={`text-cream/25 text-[9px] md:text-xs tracking-[0.3em] uppercase font-sans mt-2 md:mt-3 relative z-10 ${!started ? 'hidden' : ''}`} style={{ opacity: 0 }}>
                 Where memories live on
             </p>
 
-            <button ref={btnRef} onClick={handleEnter} className="mt-8 md:mt-10 relative z-10 group" style={{ opacity: 0 }}>
+            <button ref={btnRef} onClick={handleEnter} className={`mt-8 md:mt-10 relative z-10 group ${!started ? 'hidden' : ''}`} style={{ opacity: 0 }}>
                 <div className="px-7 py-3 rounded-full border border-amber/30 group-hover:border-amber/60 active:scale-95 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(201,169,110,0.12)]">
                     <span className="text-[10px] tracking-[0.2em] uppercase font-sans text-amber/70 group-hover:text-amber transition-colors">Enter Nexora</span>
                 </div>
