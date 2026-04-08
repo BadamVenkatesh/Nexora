@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { toDriveImageUrl } from '../utils/driveUrl';
 
 export default function EventCard({ event }) {
     const cardRef = useRef(null);
@@ -34,7 +35,7 @@ export default function EventCard({ event }) {
             {/* Image / Placeholder */}
             <div className="relative h-32 md:h-40 overflow-hidden">
                 {event.imageUrl ? (
-                    <img src={event.imageUrl} alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={toDriveImageUrl(event.imageUrl)} alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 ) : (
                     <div className="w-full h-full bg-gradient-to-br from-charcoal-lighter to-charcoal flex items-center justify-center">
                         <span className="text-3xl md:text-4xl font-serif text-cream/10 font-light">{initial}</span>
