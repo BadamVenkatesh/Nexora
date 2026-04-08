@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #1a1a1a;
+  --color-charcoal-light: #2a2a2a;
+  --color-charcoal-lighter: #3a3a3a;
+  --color-cream: #f5f0e8;
+  --color-cream-dark: #e8e0d0;
+  --color-amber: #c9a96e;
+  --color-amber-light: #d4ba85;
+  --color-amber-dark: #a88a4e;
+  --color-rose: #b8707a;
+  --color-rose-light: #c98a93;
+  --color-lavender: #9b8ec4;
+  --color-lavender-light: #b0a5d4;
+  --color-warm-gray: #8a8078;
+  --color-warm-white: #faf8f5;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* ─── BASE RESET ──────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-charcoal);
+  color: var(--color-cream);
+  overflow-x: hidden;
+}
+
+/* ─── NOISE GRAIN OVERLAY ──────────── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ─── SCROLLBAR ──────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-charcoal);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal-lighter);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-amber-dark);
+}
+
+/* ─── SELECTION ──────────────────── */
+::selection {
+  background-color: rgba(201, 169, 110, 0.3);
+  color: var(--color-cream);
+}
+
+/* ─── CURSOR GLOW ─────────────────── */
+.cursor-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(
+    circle,
+    rgba(201, 169, 110, 0.06) 0%,
+    rgba(201, 169, 110, 0.02) 40%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+/* ─── GLASSMORPHISM ────────────────── */
+.glass {
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 240, 232, 0.06);
+}
+
+.glass-light {
+  background: rgba(245, 240, 232, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 240, 232, 0.08);
+}
+
+.glass-card {
+  background: rgba(42, 42, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 240, 232, 0.07);
+  border-radius: 16px;
+}
+
+/* ─── SECTION SPACING ────────────── */
+.section-padding {
+  padding: 120px 5vw;
+}
+
+/* ─── ORNAMENTAL DIVIDER ─────────── */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0.3;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  width: 60px;
+  height: 1px;
+  background: var(--color-amber);
+}
+
+.ornament-icon {
+  width: 6px;
+  height: 6px;
+  background: var(--color-amber);
+  transform: rotate(45deg);
+}
+
+/* ─── BUTTON STYLES ──────────────── */
+.btn-primary {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--color-amber-dark), var(--color-amber));
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201, 169, 110, 0.25);
+}
+
+.btn-secondary {
+  padding: 12px 32px;
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(245, 240, 232, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-amber);
+  color: var(--color-amber);
+  transform: translateY(-2px);
+}
+
+/* ─── INPUT STYLES ───────────────── */
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(245, 240, 232, 0.04);
+  border: 1px solid rgba(245, 240, 232, 0.1);
+  border-radius: 10px;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: var(--color-amber);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1);
+}
+
+.input-field::placeholder {
+  color: var(--color-warm-gray);
+}
+
+/* ─── ANIMATIONS ─────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─── MODAL OVERLAY ──────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ─── SHIMMER ────────────────────── */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ─── SELECT STYLING ─────────────── */
+select.input-field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8078' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+select.input-field option {
+  background: #2a2a2a;
+  color: #f5f0e8;
+}
+
+/* ─── RESPONSIVE ─────────────────── */
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 60px 5vw;
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+
+  .glass-card {
+    border-radius: 12px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+  }
+
+  .input-field {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-padding {
+    padding: 50px 4vw;
+  }
+}
+
+/* ─── SPIN ───────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
