@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import songSrc from '../assets/song.mpeg';
+
+const SONG_URL = '/song.mpeg';
 
 const lines = [
     'Some people walk into your life…',
@@ -64,7 +65,7 @@ export default function SplashScreen({ onComplete }) {
     return (
         <div ref={containerRef} className="fixed inset-0 z-[10000] bg-charcoal flex flex-col items-center justify-center px-6 overflow-hidden" style={{ opacity: 0 }}>
             {/* Background audio */}
-            <audio ref={audioRef} src={songSrc} loop preload="auto" />
+            <audio ref={audioRef} src={SONG_URL} loop preload="auto" />
 
             {/* Ambient particles */}
             <div className="absolute inset-0 pointer-events-none">
